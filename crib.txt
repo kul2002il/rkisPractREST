@@ -4,9 +4,26 @@ django-admin startproject secSolo
 
 
 
-API авторизации			/auth
+API авторизации				/auth					POST
 	login, password
 
-API создания постов		/posts
-	title, anons, text, tags, image
+API создания постов			/posts					POST		admin
+	title, anons, text, *tags, image
+
+API редактирования постов	/posts/<POST_ID>		POST		admin
+	title, anons, text, *tags, image
+
+API удаления поста			/posts/<POST_ID>		DELETE		admin
+
+API просмотра записей		/posts					GET
+
+API просмотра одной записи	/posts/<POST_ID>		GET
+
+API добавления комментария	/posts/<POST_ID>/comments POST
+	author, comment
+
+API удаления комментария	/posts/<POST_ID>/comments/<COMMENT_ID>
+													DELETE		admin
+													DELETE		admin
+API поиска постов			/posts/tag/<TAG_NAME>	GET
 
