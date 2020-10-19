@@ -126,4 +126,3 @@ AUTH_USER_MODEL = 'app.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*S'
-
