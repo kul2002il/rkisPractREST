@@ -1,0 +1,12 @@
+pip install django
+
+django-admin startproject secSolo
+
+
+
+API авторизации			/auth
+	login, password
+
+API создания постов		/posts
+	title, anons, text, tags, image
+
