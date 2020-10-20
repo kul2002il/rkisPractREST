@@ -5,6 +5,8 @@ pip install django-cors-headers
 
 django-admin startproject secSolo
 
+git log --pretty=format:"%h | %s %d" --graph
+
 
 
 API авторизации				/auth					POST

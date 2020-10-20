@@ -15,6 +15,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
 	title = models.CharField(max_length=255, verbose_name='Заголовок')
+	datetime = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Дата публикации')
 	anons = models.CharField(max_length=254, verbose_name='Краткая информация о новости.')
 	text = models.CharField(max_length=255, verbose_name='Текст')
 	tags = models.ManyToManyField(Tag)
@@ -25,5 +26,5 @@ class Comment(models.Model):
 	post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='Пост', related_name="comments")
 	author = models.CharField(max_length=255, verbose_name='Автор')
 	comment = models.TextField(max_length=255, verbose_name='Текст')
-	datatime = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Дата публикации')
+	datetime = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Дата публикации')
 
