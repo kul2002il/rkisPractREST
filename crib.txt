@@ -25,7 +25,7 @@ API удаления поста			/posts/<POST_ID>		DELETE		admin
 +API просмотра одной записи	/posts/<POST_ID>		GET
 	также показывает комментарии к данной записи
 
-API добавления комментария	/posts/<POST_ID>/comments POST
++API добавления комментария	/posts/<POST_ID>/comments POST
 	author, comment
 
 API удаления комментария	/posts/<POST_ID>/comments/<COMMENT_ID>
