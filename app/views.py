@@ -40,12 +40,21 @@ class ViewLogin(APIView):
 "login": "admin",
 "password": "admin"
 }
+"token": "6477f36bdecd56c6150c2e2419116044cd97fb3c"
 """
 
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
+@permission_classes((IsAuthenticatedOrReadOnly,))
 def viewPost(request):
+	if request.method == 'POST':
+		serializer = SerPost(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return  Response(serializer.data, status=HTTP_201_CREATED)
+		else:
+			return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 	if request.method == 'GET':
 		bbs = Post.objects.all()[:10]
 		serializer = SerPost(bbs, many=True)

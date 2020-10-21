@@ -10,7 +10,7 @@ git log --pretty=format:"%h | %s %d" --graph
 
 
 
-API авторизации				/auth					POST
++API авторизации 			/auth					POST
 	login, password
 
 API создания постов 		/posts					POST		admin
