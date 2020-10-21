@@ -1,6 +1,7 @@
 pip install django
 pip install djangorestframework
 pip install django-cors-headers
+pip install Pillow
 
 
 django-admin startproject secSolo
@@ -30,6 +31,6 @@ API удаления поста			/posts/<POST_ID>		DELETE		admin
 
 API удаления комментария	/posts/<POST_ID>/comments/<COMMENT_ID>
 													DELETE		admin
-													DELETE		admin
+
 API поиска постов			/posts/tag/<TAG_NAME>	GET
 

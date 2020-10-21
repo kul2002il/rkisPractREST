@@ -1,12 +1,47 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 
 from .models import User, Tag, Post, Comment
-from .serializers import SerPost, SerComment
+from .serializers import SerPost, SerComment, SerUser
+
+
+class ViewLogin(APIView):
+	permission_classes = ()
+	serializer_class = SerUser
+
+	def post(self, request,):
+		serializer = self.serializer_class(data=request.data)
+		serializer.is_valid(raise_exception=True)
+
+		data = serializer.data
+
+		username = data["login"]
+		password = data["password"]
+
+		user = authenticate(username=username, password=password)
+		if user:
+			token, created = Token.objects.get_or_create(user=user)
+
+			print("hdfsdfs")
+			print(token)
+
+			return Response({"token": f"{token}"})
+		else:
+			return Response({"error": "Wrong Credentials"}, status=HTTP_400_BAD_REQUEST)
+"""
+{
+"login": "admin",
+"password": "admin"
+}
+"""
+
 
 
 @api_view(['GET'])
