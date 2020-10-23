@@ -13,7 +13,7 @@ git log --pretty=format:"%h | %s %d" --graph
 +API авторизации 			/auth					POST
 	login, password
 
-API создания постов 		/posts					POST		admin
++API создания постов 		/posts					POST		admin
 	title, anons, text, *tags, image
 
 API редактирования постов	/posts/<POST_ID>		POST		admin
@@ -32,5 +32,5 @@ API удаления поста			/posts/<POST_ID>		DELETE		admin
 API удаления комментария	/posts/<POST_ID>/comments/<COMMENT_ID>
 													DELETE		admin
 
-API поиска постов			/posts/tag/<TAG_NAME>	GET
++API поиска постов			/posts/tag/<TAG_NAME>	GET
 

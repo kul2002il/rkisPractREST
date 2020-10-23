@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 
 from .models import User, Tag, Post, Comment
 from .serializers import SerPost, SerComment, SerUser
+from .utilities import checkAuth
 
 
 class ViewLogin(APIView):
@@ -48,23 +49,24 @@ class ViewLogin(APIView):
 
 
 @api_view(['GET', 'POST'])
-@permission_classes((IsAuthenticatedOrReadOnly,))
+# @permission_classes((IsAuthenticatedOrReadOnly,))
 def viewPost(request):
 	if request.method == 'POST':
-		# if not request.headers['Authorization']:
-		# 	return Response({"error": "auth"}, status=HTTP_400_BAD_REQUEST)
-		# if not( Post.objects.filter(key=request.headers.Authorization) ):
-		# 	return Response({"error": "auth"}, status=HTTP_400_BAD_REQUEST)
+		#
+		check = checkAuth(request)
+		if check:
+			return check
+		#
 		serializer = SerPost(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
-			return  Response(serializer.data, status=HTTP_201_CREATED)
+			return Response(serializer.data, status=HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 	if request.method == 'GET':
 		bbs = Post.objects.all()[:10]
 		serializer = SerPost(bbs, many=True)
-		return Response(serializer.data, headers={'Authorization': "6477f36bdecd56c6150c2e2419116044cd97fb3c"})
+		return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -84,6 +86,11 @@ def viewPostDetail(request, pk):
 # @permission_classes((IsAuthenticatedOrReadOnly,))
 def viewComments(request, pk):
 	if request.method == 'POST':
+		#
+		check = checkAuth(request)
+		if check:
+			return check
+		#
 		serializer = SerComment(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
