@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import RetrieveAPIView
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK, HTTP_401_UNAUTHORIZED
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
@@ -30,14 +30,9 @@ class ViewLogin(APIView):
 		if user:
 			token, created = Token.objects.get_or_create(user=user)
 
-			print("hdfsdfs")
-			print(token)
-
-			res = Response({"token": f"{token}"}, headers={'X-CSRFToken': f"{token}"})
-			res.set_cookie('Authorization', f"{token}")  # csrftoken
-			return res
+			return Response({'status': 'true', "token": f"{token}"}, status=HTTP_200_OK)
 		else:
-			return Response({"error": "Wrong Credentials"}, status=HTTP_400_BAD_REQUEST)
+			return Response({'status': 'false', 'message': 'Invalid authorization data'}, status=HTTP_401_UNAUTHORIZED)
 """
 {
 "login": "admin",
@@ -60,9 +55,9 @@ def viewPost(request):
 		serializer = SerPost(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
-			return Response(serializer.data, status=HTTP_201_CREATED)
+			return Response({'status': 'true', "token": f"{serializer.data.id}"}, status=HTTP_201_CREATED)
 		else:
-			return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+			return Response({'status': 'true', "token": f"{serializer.data.id}"}, status=HTTP_400_BAD_REQUEST)
 	if request.method == 'GET':
 		bbs = Post.objects.all()[:10]
 		serializer = SerPost(bbs, many=True)
@@ -95,6 +90,7 @@ def viewPostDetail(request, pk):
 			post = Post.objects.get(id=pk)
 			if not post:
 				return Response({'error': 'NotFoundPost'}, status=HTTP_404_NOT_FOUND)
+			#
 			serializer = SerPost(data=request.data)
 			if serializer.is_valid():
 				data = serializer.data
