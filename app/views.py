@@ -94,13 +94,29 @@ def viewComments(request, pk):
 		serializer = SerComment(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
-			return  Response(serializer.data, status=HTTP_201_CREATED)
+			return Response(serializer.data, status=HTTP_201_CREATED)
 		else:
 			return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 	else:
 		comments = Comment.objects.filter(post=pk)
 		serializer = SerComment(comments, many=True)
 		return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+# @permission_classes((IsAuthenticatedOrReadOnly,))
+def viewCommentsDelete(request, pkPost, pk):
+	#
+	check = checkAuth(request)
+	if check:
+		return check
+	#
+	comm = Comment.objects.get(id=pk)
+	if comm:
+		comm.delete()
+		return Response({'message': 'Success'}, status=HTTP_201_CREATED)
+	else:
+		return Response({'error': 'NotFoundComment'}, status=HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])

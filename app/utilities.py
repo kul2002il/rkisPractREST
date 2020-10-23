@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 def checkAuth(request):
 	if not request:
 		return Response({'error': 'NotRequest'}, status=HTTP_500_INTERNAL_SERVER_ERROR)
-	if not request.data['token']:
+	if 'token' not in request.data:
 		return Response({'error': 'NotToken'}, status=HTTP_400_BAD_REQUEST)
 	key = request.data['token']
 	if not Token.objects.filter(key=key):

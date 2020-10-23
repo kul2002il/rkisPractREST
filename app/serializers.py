@@ -21,12 +21,12 @@ class SerPost(serializers.ModelSerializer):
 
 	class Meta:
 		model = Post
-		fields = ('title', 'datetime', 'anons', 'text', 'tags', 'image')
+		fields = ('id', 'title', 'datetime', 'anons', 'text', 'tags', 'image')
 
 
 class SerComment(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
-		fields = ('post', 'author', 'comment', 'datetime')
+		fields = ('id', 'post', 'author', 'comment', 'datetime')
 
 
