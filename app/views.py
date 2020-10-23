@@ -69,17 +69,58 @@ def viewPost(request):
 		return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST', 'DELETE'])
 def viewPostDetail(request, pk):
-	post = Post.objects.filter(id=pk)[0]
-	serPost = SerPost(post, many=False)
-	comments = Comment.objects.filter(post=pk)
-	serCom = SerComment(comments, many=True)
-	data = {
-		'serPost': serPost.data,
-		'serCom': serCom.data
-	}
-	return Response(data)
+	if request.method == 'GET':
+		post = Post.objects.filter(id=pk)
+		if not post:
+			return Response({'error': 'NotFoundPost'}, status=HTTP_404_NOT_FOUND)
+		else:
+			post = post[0]
+		serPost = SerPost(post, many=False)
+		comments = Comment.objects.filter(post=pk)
+		serCom = SerComment(comments, many=True)
+		data = {
+			'serPost': serPost.data,
+			'serCom': serCom.data
+		}
+		return Response(data)
+	else:
+		#
+		check = checkAuth(request)
+		if check:
+			return check
+		#
+		if request.method == 'POST':
+			post = Post.objects.get(id=pk)
+			if not post:
+				return Response({'error': 'NotFoundPost'}, status=HTTP_404_NOT_FOUND)
+			serializer = SerPost(data=request.data)
+			if serializer.is_valid():
+				data = serializer.data
+				# for key in data:
+				# 	post[key] = data[key]
+				if 'title' in data:
+					post.title = data['title']
+				if 'anons' in data:
+					post.anons = data['anons']
+				if 'text' in data:
+					post.text = data['text']
+				if 'tags' in data:
+					post.tags = data['tags']
+				if 'image' in data:
+					post.image = data['image']
+				post.save()
+				return Response({'message': 'Success'}, status=HTTP_201_CREATED)
+			else:
+				return Response({'error': 'NotFoundPost'}, status=HTTP_400_BAD_REQUEST)
+		if request.method == 'DELETE':
+			comm = Post.objects.get(id=pk)
+			if comm:
+				comm.delete()
+				return Response({'message': 'Success'}, status=HTTP_201_CREATED)
+			else:
+				return Response({'error': 'NotFoundPost'}, status=HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET', 'POST'])

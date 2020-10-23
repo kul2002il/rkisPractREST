@@ -19,6 +19,12 @@ def checkAuth(request):
 	"title": "dfdgfkkjdfuvuiic",
 	"anons": "Неожиданно",
 	"text": "Очень неожиданно"
+}
+{
+	"token": "6477f36bdecd56c6150c2e2419116044cd97fb3c",
+	"title": "Изменённый пост",
+	"anons": "Неожиданно",
+	"text": "Очень неожиданно"
 }"""
 
 

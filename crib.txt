@@ -16,10 +16,10 @@ git log --pretty=format:"%h | %s %d" --graph
 +API создания постов 		/posts					POST		admin
 	title, anons, text, *tags, image
 
-API редактирования постов	/posts/<POST_ID>		POST		admin
++API редактирования постов	/posts/<POST_ID>		POST		admin
 	title, anons, text, *tags, image
 
-API удаления поста			/posts/<POST_ID>		DELETE		admin
++API удаления поста			/posts/<POST_ID>		DELETE		admin
 
 +API просмотра записей		/posts					GET
 
