@@ -25,6 +25,14 @@ def checkAuth(request):
 	"title": "Изменённый пост",
 	"anons": "Неожиданно",
 	"text": "Очень неожиданно"
+}
+{
+	"token": "6477f36bdecd56c6150c2e2419116044cd97fb3c",
+	"title": "Новый пост",
+	"anons": "Неожиданно",
+	"text": "Очень неожиданно",
+	"tag": [3],
+	"image": "https://www.viakoo.com/wp-content/uploads/2018/02/new.png"
 }"""
 
 

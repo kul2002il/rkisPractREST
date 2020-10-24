@@ -10,6 +10,12 @@ class SerUser(serializers.ModelSerializer):
 		# extra_kwargs = {'password': {'write_only': True}}
 
 
+class SerTagId(serializers.ModelSerializer):
+	class Meta:
+		model = Tag
+		fields = ('id','name',)
+
+
 class SerTag(serializers.ModelSerializer):
 	class Meta:
 		model = Tag

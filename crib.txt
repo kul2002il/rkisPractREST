@@ -32,5 +32,7 @@ git log --pretty=format:"%h | %s %d" --graph
 +API удаления комментария	/posts/<POST_ID>/comments/<COMMENT_ID>
 													DELETE		admin
 
-+API поиска постов			/posts/tag/<TAG_NAME>	GET
++API просмотра тегов		/posts/tag				GET
+
+API поиска постов			/posts/tag/<TAG_NAME>	GET
 

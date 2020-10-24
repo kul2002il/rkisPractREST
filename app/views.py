@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 
 from .models import User, Tag, Post, Comment
-from .serializers import SerPost, SerComment, SerUser
+from .serializers import SerPost, SerComment, SerUser, SerTagId
 from .utilities import checkAuth
 
 
@@ -54,12 +54,14 @@ def viewPost(request):
 		#
 		serializer = SerPost(data=request.data)
 		if serializer.is_valid():
+			# serializer.data.image = request.FILES.image
 			serializer.save()
-			return Response({'status': 'true', "token": f"{serializer.data.id}"}, status=HTTP_201_CREATED)
+			id = Post.objects.get(title=serializer.data['title']).id
+			return Response({'status': 'true', "post_id": f"{id}"}, status=HTTP_201_CREATED)
 		else:
-			return Response({'status': 'true', "token": f"{serializer.data.id}"}, status=HTTP_400_BAD_REQUEST)
+			return Response({'status': 'false', "message": serializer.errors}, status=HTTP_400_BAD_REQUEST)
 	if request.method == 'GET':
-		bbs = Post.objects.all()[:10]
+		bbs = Post.objects.all()
 		serializer = SerPost(bbs, many=True)
 		return Response(serializer.data)
 
@@ -162,7 +164,14 @@ def viewPostFromTag(request, name):
 	if not tags:
 		return Response({"error": "not tag"}, status=HTTP_404_NOT_FOUND)
 	print(tags[0].id)
-	bbs = Post.objects.filter(tags__id=tags[0].id)[:10]
+	bbs = Post.objects.filter(tags__id=tags[0].id)
 	print(bbs)
 	serializer = SerPost(bbs, many=True)
+	return Response(serializer.data)
+
+
+@api_view(['GET'])
+def viewTag(request):
+	bbs = Tag.objects.all()
+	serializer = SerTagId(bbs, many=True)
 	return Response(serializer.data)
